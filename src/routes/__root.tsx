@@ -9,6 +9,7 @@ const queryClient = new QueryClient();
 
 export const Route = createRootRoute({
   component: Layout,
+  notFoundComponent: () => <div>Page not found!</div>,
 });
 
 function Layout() {
