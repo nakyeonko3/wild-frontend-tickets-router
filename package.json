@@ -2,8 +2,10 @@
   "name": "wild-frontend-tickets-router",
   "version": "1.0.0",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "start": "vite --port 8080",
+    "dev": "vite",
     "test": "vitest --watch --reporter=verbose"
   },
   "keywords": [],
@@ -11,11 +13,14 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@tanstack/router-plugin": "^1.116.1",
+    "@tanstack/router-vite-plugin": "^1.116.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@types/daum-postcode": "^2.0.3",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.4.1",
     "jsdom": "^26.0.0",
     "nock": "^14.0.2",
     "typescript": "^5.8.2",
@@ -25,6 +30,8 @@
   "dependencies": {
     "@tanstack/react-query": "^5.69.0",
     "@tanstack/react-query-devtools": "^5.69.0",
+    "@tanstack/react-router": "^1.116.0",
+    "@tanstack/react-router-devtools": "^1.116.0",
     "axios": "^1.8.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
