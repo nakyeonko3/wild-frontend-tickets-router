@@ -1,25 +1,33 @@
+import { queryOptions } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { fetchTicket } from "../../api";
+import { TICKETS_QUERY_KEY } from "../../contants";
+import useTicket from "../../hooks/useTicket";
+
+function ticketQueryOptions(ticketId: string) {
+  return queryOptions({
+    queryKey: [TICKETS_QUERY_KEY, ticketId],
+    queryFn: () => fetchTicket({ ticketId }),
+  });
+}
 
 export const Route = createFileRoute("/tickets/$ticketId")({
-  loader: async ({ params }) => {
-    const { ticketId } = params;
-    const ticket = await fetchTicket({ ticketId });
-    if (!ticket) {
-      throw new Response("Not Found", { status: 404 });
-    }
-    return ticket;
+  loader: async ({ context: { queryClient }, params: { ticketId } }) => {
+    queryClient.ensureQueryData(ticketQueryOptions(ticketId));
   },
   pendingComponent: () => <div>Loading...</div>,
   errorComponent: () => {
-    return <div>Ticket not found</div>;
+    return <div>Error!</div>;
   },
   component: TicketPage,
 });
 
 function TicketPage() {
-  const ticket = Route.useLoaderData();
+  const { ticketId } = Route.useParams();
+
   const navigate = Route.useNavigate();
+
+  const ticket = useTicket({ ticketId });
 
   const handleBackClick = () => {
     navigate({ to: "/tickets" });
