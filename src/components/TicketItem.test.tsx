@@ -1,41 +1,38 @@
-import nock from 'nock';
+import nock from "nock";
 
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, it } from "vitest";
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { screen } from "@testing-library/react";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import TicketItem from "./TicketItem";
 
-import TicketItem from './TicketItem';
+import { API_BASE_URL } from "../api";
 
-import { API_BASE_URL } from '../api';
-
-import { Ticket } from '../types';
+import { renderWithTestProviders } from "../test-helpers";
+import { Ticket } from "../types";
 
 const context = describe;
 
-describe('TicketItem', () => {
-  let requestTicketId = '';
+describe("TicketItem", () => {
+  let requestTicketId = "";
   let requestBody: any = null;
 
   const ticket: Ticket = {
-    id: 'ticket-1',
-    title: 'TITLE',
-    description: 'DESCRIPTION',
-    status: 'open',
-    comments: [
-      { id: 'comment-1', content: 'COMMENT' },
-    ],
+    id: "ticket-1",
+    title: "TITLE",
+    description: "DESCRIPTION",
+    status: "open",
+    comments: [{ id: "comment-1", content: "COMMENT" }],
   };
 
   beforeEach(() => {
-    requestTicketId = '';
+    requestTicketId = "";
     requestBody = null;
 
     nock(API_BASE_URL)
       .patch(`/tickets/${ticket.id}`)
       .reply(200, (uri, body: any) => {
-        const parts = uri.split('/');
+        const parts = uri.split("/");
         requestTicketId = parts[parts.length - 1];
         requestBody = body;
         return {
@@ -46,19 +43,13 @@ describe('TicketItem', () => {
   });
 
   function renderTicketItem() {
-    const queryClient = new QueryClient();
-
-    render((
-      <QueryClientProvider client={queryClient}>
-        <TicketItem ticket={ticket} />
-      </QueryClientProvider>
-    ));
+    renderWithTestProviders(<TicketItem ticket={ticket} />);
   }
 
-  it('renders title and status', () => {
+  it("renders title and status", () => {
     renderTicketItem();
 
-    screen.getByText('TITLE');
+    screen.getByText("TITLE");
     screen.getByText(/Open/);
   });
 });

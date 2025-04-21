@@ -15,7 +15,11 @@ export default function TicketItem({ ticket }: { ticket: Ticket }) {
 
   return (
     <li>
-      <Link to="/tickets/$ticketId" params={{ ticketId: ticket.id }}>
+      <Link
+        to="/tickets/$ticketId"
+        params={{ ticketId: ticket.id }}
+        preload="intent"
+      >
         <div className="title">{ticket.title}</div>
       </Link>
       <div className="status">
