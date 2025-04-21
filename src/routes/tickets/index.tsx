@@ -1,19 +1,25 @@
+import { createFileRoute } from "@tanstack/react-router";
+
 import { Suspense } from "react";
 
 import { ErrorBoundary } from "react-error-boundary";
 
-import TicketForm from "./TicketForm";
-import TicketList from "./TicketList";
+import TicketForm from "../../components/TicketForm";
+import TicketList from "../../components/TicketList";
 
-export default function Main() {
+export const Route = createFileRoute("/tickets/")({
+  component: TicketsPage,
+});
+
+function TicketsPage() {
   return (
-    <main>
+    <>
       <ErrorBoundary fallback={<div>Error!</div>}>
         <Suspense fallback={<div>Loading...</div>}>
           <TicketList />
         </Suspense>
       </ErrorBoundary>
       <TicketForm />
-    </main>
+    </>
   );
 }
