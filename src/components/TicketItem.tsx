@@ -24,7 +24,16 @@ export default function TicketItem({ ticket }: { ticket: Ticket }) {
       </Link>
       <div className="status">
         Status:
-        <span>{ticket.status === "open" ? "Open" : "Closed"}</span>
+        <button
+          onClick={handleClick}
+          style={{
+            cursor: "pointer",
+            border: "solid 1px #000",
+            borderRadius: "4px",
+          }}
+        >
+          {ticket.status === "open" ? "Open" : "Closed"}
+        </button>
       </div>
       <div className="comments">
         Comments:
