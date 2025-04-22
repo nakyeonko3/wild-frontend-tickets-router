@@ -1,50 +1,33 @@
-import nock from 'nock';
+import { beforeEach, describe, it } from "vitest";
 
-import { beforeEach, describe, it } from 'vitest';
+import { render, screen, waitFor } from "@testing-library/react";
 
-import { render, screen, waitFor } from '@testing-library/react';
+import { TicketList } from "./TicketList";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Ticket } from "@/types";
 
-import TicketList from './TicketList';
-
-import { API_BASE_URL, TicketListDto } from '../api';
-
-describe('TicketList', () => {
-  beforeEach(() => {
-    const responseBody: TicketListDto = {
-      tickets: [
+describe("TicketList", () => {
+  const tickets: Ticket[] = [
+    {
+      id: "ticket-1",
+      title: "Ticket #1",
+      description: "Ticket Description",
+      status: "open",
+      comments: [
         {
-          id: 'ticket-1',
-          title: 'Ticket #1',
-          description: 'Ticket Description',
-          status: 'open',
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Comment Content',
-            },
-          ],
-        }
+          id: "comment-1",
+          content: "Comment Content",
+        },
       ],
-    };
-
-    nock(API_BASE_URL)
-      .get('/tickets')
-      .reply(200, responseBody);
-  });
+    },
+  ];
+  beforeEach(() => {});
 
   function renderTicketList() {
-    const queryClient = new QueryClient();
-
-    render((
-      <QueryClientProvider client={queryClient}>
-        <TicketList />
-      </QueryClientProvider>
-    ));
+    render(<TicketList tickets={tickets} />);
   }
 
-  it('renders tickets', async () => {
+  it("renders tickets", async () => {
     renderTicketList();
 
     await waitFor(() => {
