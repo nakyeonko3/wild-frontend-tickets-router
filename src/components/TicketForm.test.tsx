@@ -1,27 +1,25 @@
-import nock from 'nock';
+import nock from "nock";
 
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from "vitest";
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import TicketForm from "./TicketForm";
 
-import TicketForm from './TicketForm';
+import { API_BASE_URL } from "../api";
 
-import { API_BASE_URL } from '../api';
-
-import { Ticket } from '../types';
+import { Ticket } from "../types";
 
 const context = describe;
 
-describe('TicketForm', () => {
+describe("TicketForm", () => {
   let requestBody: any = null;
 
   const ticket: Ticket = {
-    id: 'ticket-1',
-    title: 'New Ticket',
-    description: 'New Ticket Description',
-    status: 'open',
+    id: "ticket-1",
+    title: "New Ticket",
+    description: "New Ticket Description",
+    status: "open",
     comments: [],
   };
 
@@ -29,7 +27,7 @@ describe('TicketForm', () => {
     requestBody = null;
 
     nock(API_BASE_URL)
-      .post('/tickets')
+      .post("/tickets")
       .reply(201, (_uri, body) => {
         requestBody = body;
         return ticket;
@@ -37,31 +35,25 @@ describe('TicketForm', () => {
   });
 
   function renderTicketForm() {
-    const queryClient = new QueryClient();
-
-    render((
-      <QueryClientProvider client={queryClient}>
-        <TicketForm />
-      </QueryClientProvider>
-    ));
+    render(<TicketForm />);
   }
 
-  context('when user fills and submits a new ticket', () => {
-    it('calls API', async () => {
+  context("when user fills and submits a new ticket", () => {
+    it("calls API", async () => {
       renderTicketForm();
 
-      fireEvent.change(screen.getByRole('textbox', { name: /Title/ }), {
-        target: { value: 'New Ticket' },
+      fireEvent.change(screen.getByRole("textbox", { name: /Title/ }), {
+        target: { value: "New Ticket" },
       });
-      fireEvent.change(screen.getByRole('textbox', { name: /Description/ }), {
-        target: { value: 'New Ticket Description' },
+      fireEvent.change(screen.getByRole("textbox", { name: /Description/ }), {
+        target: { value: "New Ticket Description" },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Add Ticket/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Add Ticket/ }));
 
       await waitFor(() => {
         expect(requestBody).toBeTruthy();
-        expect(requestBody.title).toBe('New Ticket');
-        expect(requestBody.description).toBe('New Ticket Description');
+        expect(requestBody.title).toBe("New Ticket");
+        expect(requestBody.description).toBe("New Ticket Description");
       });
     });
   });
