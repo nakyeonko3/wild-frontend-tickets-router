@@ -7,6 +7,14 @@ interface TicketDetailPageProps {
   }>;
 }
 
+export async function generateMetadata({ params }: TicketDetailPageProps) {
+  const { id } = await params;
+
+  return {
+    title: `Ticket #${id}`,
+  };
+}
+
 export default async function Page({ params }: TicketDetailPageProps) {
   const { id: ticketId } = await params;
 
