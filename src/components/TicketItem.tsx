@@ -1,25 +1,24 @@
-import useUpdateTicketStatus from '../hooks/useUpdateTicketStatus';
+import Link from "next/link";
+import { Ticket } from "../types";
 
-import { Ticket } from '../types';
+export default function TicketItem({ ticket }: { ticket: Ticket }) {
+  // const updateTicketStatus = useUpdateTicketStatus();
 
-export default function TicketItem({ ticket }: {
-  ticket: Ticket;
-}) {
-  const updateTicketStatus = useUpdateTicketStatus();
-
-  const handleClick = () => {
-    updateTicketStatus({
-      id: ticket.id,
-      status: ticket.status === 'open' ? 'closed' : 'open',
-    });
-  };
+  // const handleClick = () => {
+  //   updateTicketStatus({
+  //     id: ticket.id,
+  //     status: ticket.status === 'open' ? 'closed' : 'open',
+  //   });
+  // };
 
   return (
     <li>
-      <div className="title">{ticket.title}</div>
+      <Link href={`/tickets/${ticket.id}`} className="ticket">
+        <div className="title">{ticket.title}</div>
+      </Link>
       <div className="status">
         Status:
-        <span>{ticket.status === 'open' ? 'Open' : 'Closed'}</span>
+        <span>{ticket.status === "open" ? "Open" : "Closed"}</span>
       </div>
       <div className="comments">
         Comments:

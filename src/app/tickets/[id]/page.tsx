@@ -1,0 +1,24 @@
+import { fetchTicket } from "@/api";
+import { BackButton } from "@/components/backButton";
+
+interface TicketDetailPageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function Page({ params }: TicketDetailPageProps) {
+  const { id: ticketId } = await params;
+
+  const ticket = await fetchTicket({ ticketId });
+
+  return (
+    <div className="ticket-detail">
+      <div className="title">{ticket.title}</div>
+      <div className="description">{ticket.description}</div>
+      <div className="status">{ticket.status}</div>
+      <div className="comment-count">Comments: {ticket.comments.length}</div>
+      <BackButton />
+    </div>
+  );
+}

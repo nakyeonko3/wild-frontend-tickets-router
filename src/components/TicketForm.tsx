@@ -1,31 +1,26 @@
-import { FormEvent } from 'react';
-
-import TextField from './TextField';
-import TextArea from './TextArea';
-import SubmitButton from './SubmitButton';
-
-import useCreateTicket from '../hooks/useCreateTicket';
+import { createTicket } from "@/api";
+import { revalidatePath } from "next/cache";
+import SubmitButton from "./SubmitButton";
+import TextArea from "./TextArea";
+import TextField from "./TextField";
 
 export default function TicketForm() {
-  const createTicket = useCreateTicket();
-
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-
-    const form = event.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const title = formData.get('title') as string;
-    const description = formData.get('description') as string;
-
-    createTicket({ title, description });
-
-    form.reset();
+  const handleSubmitTicket = async (formData: FormData) => {
+    "use server";
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    await createTicket({ title, description });
+    revalidatePath("/tickets");
   };
 
   return (
-    <form className="add-ticket-form" onSubmit={handleSubmit}>
+    <form className="add-ticket-form" action={handleSubmitTicket}>
       <TextField label="Title" name="title" placeholder="Title" />
-      <TextArea label="Description" name="description" placeholder="Description" />
+      <TextArea
+        label="Description"
+        name="description"
+        placeholder="Description"
+      />
       <SubmitButton label="Add Ticket" />
     </form>
   );
