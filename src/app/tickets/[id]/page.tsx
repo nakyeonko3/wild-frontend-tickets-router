@@ -1,5 +1,6 @@
 import { fetchTicket } from "@/api";
 import { BackButton } from "@/components/backButton";
+import TicketStatus from "@/components/TicketStatus";
 
 interface TicketDetailPageProps {
   params: Promise<{
@@ -24,7 +25,7 @@ export default async function Page({ params }: TicketDetailPageProps) {
     <div className="ticket-detail">
       <div className="title">{ticket.title}</div>
       <div className="description">{ticket.description}</div>
-      <div className="status">{ticket.status}</div>
+      <TicketStatus ticket={ticket} />
       <div className="comment-count">Comments: {ticket.comments.length}</div>
       <BackButton />
     </div>

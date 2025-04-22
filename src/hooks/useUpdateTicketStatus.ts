@@ -1,34 +1,27 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateTicketStatus } from "@/api";
+import { Ticket } from "@/types";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-import { TicketListDto, updateTicketStatus } from '../api';
+export default function useUpdateTicketStatus({ ticket }: { ticket: Ticket }) {
+  const [currentStatus, setCurrentStatus] = useState(ticket.status);
+  const router = useRouter();
 
-import { TICKETS_QUERY_KEY } from '../contants';
-
-export default function useUpdateTicketStatus() {
-  const queryClient = useQueryClient();
-
-  const { mutate } = useMutation({
-    mutationFn: updateTicketStatus,
-    onMutate: ({ id, status }) => {
-      queryClient.cancelQueries({ queryKey: [TICKETS_QUERY_KEY] });
-      const previousTickets = queryClient.getQueryData([TICKETS_QUERY_KEY]);
-      queryClient.setQueryData([TICKETS_QUERY_KEY], (old: TicketListDto) => ({
-        ...old,
-        tickets: (old?.tickets || []).map((ticket) => (
-          ticket.id === id
-          ? { ...ticket, status }
-          : ticket
-        )),
-      }));
-      return { previousTickets };
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [TICKETS_QUERY_KEY] });
-    },
-    onError: (_error, _variables, context: any) => {
-      queryClient.setQueryData([TICKETS_QUERY_KEY], context.previousTickets);
+  const handleClick = async () => {
+    const previousStatus = currentStatus;
+    const newStatus = previousStatus === "open" ? "closed" : "open";
+    setCurrentStatus(newStatus);
+    try {
+      await updateTicketStatus({
+        id: ticket.id,
+        status: newStatus,
+      });
+      router.refresh();
+    } catch (error) {
+      setCurrentStatus(previousStatus);
+      console.error("Failed to update ticket status:", error);
+      alert("상태 업데이트에 실패했습니다. 다시 시도해주세요.");
     }
-  });
-
-  return mutate;
+  };
+  return { currentStatus, handleClick };
 }
