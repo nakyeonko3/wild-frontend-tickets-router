@@ -1,4 +1,4 @@
-import { createTicket } from "@/api";
+import { createNewTicket } from "@/services/ticketService";
 import { revalidatePath } from "next/cache";
 import SubmitButton from "./SubmitButton";
 import TextArea from "./TextArea";
@@ -9,7 +9,7 @@ export default function TicketForm() {
     "use server";
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
-    await createTicket({ title, description });
+    await createNewTicket({ title, description });
     revalidatePath("/tickets");
   };
 
