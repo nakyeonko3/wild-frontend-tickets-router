@@ -5,9 +5,12 @@ import { Ticket } from "../types";
 export default function TicketItem({ ticket }: { ticket: Ticket }) {
   return (
     <li>
-      <Link href={`/tickets/${ticket.id}`} className="ticket">
-        <div className="title">{ticket.title}</div>
-      </Link>
+      <div className="title">
+        <Link href={`/tickets/${ticket.id}`} className="ticket">
+          {ticket.title}
+        </Link>
+      </div>
+      <div className="description">{ticket.description}</div>
       <TicketStatus ticket={ticket} />
       <div className="comments">
         Comments:
