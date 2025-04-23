@@ -1,5 +1,5 @@
-import { fetchTickets } from "@/api";
 import TicketItem from "@/components/TicketItem";
+import getTickets from "@/services/ticketService";
 import { Ticket } from "@/types";
 
 export function TicketList({ tickets }: { tickets: Ticket[] }) {
@@ -13,6 +13,6 @@ export function TicketList({ tickets }: { tickets: Ticket[] }) {
 }
 
 export default async function TicketListWrapper() {
-  const { tickets } = await fetchTickets();
+  const tickets = await getTickets();
   return <TicketList tickets={tickets} />;
 }

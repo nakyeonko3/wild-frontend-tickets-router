@@ -32,6 +32,8 @@ describe("TicketList", () => {
 
     await waitFor(() => {
       screen.getByText(/Ticket #1/);
+      screen.getByText(/Ticket Description/);
+      screen.getByText(/open/i);
     });
   });
 });
