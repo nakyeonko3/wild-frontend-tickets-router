@@ -1,9 +1,8 @@
 {
   "name": "wild-frontend-tickets-router",
   "version": "1.0.0",
-  "main": "app.js",
   "scripts": {
-    "start": "vite --port 8080",
+    "start": "npx next dev --port 8080",
     "test": "vitest --watch --reporter=verbose"
   },
   "keywords": [],
@@ -14,18 +13,19 @@
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@types/daum-postcode": "^2.0.3",
+    "@types/node": "22.15.3",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "jsdom": "^26.0.0",
     "nock": "^14.0.2",
     "typescript": "^5.8.2",
-    "vite": "^6.2.1",
     "vitest": "^3.0.8"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.69.0",
     "@tanstack/react-query-devtools": "^5.69.0",
     "axios": "^1.8.4",
+    "next": "^15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^5.0.0"
