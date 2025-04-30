@@ -1,20 +1,15 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { fetchTickets } from '../api';
-
-import { TICKETS_QUERY_KEY } from '../contants';
+import { ticketsQueryOptions } from "@/pages/queryOptions";
 
 export default function useTickets() {
-  const { data, error, isFetching } = useSuspenseQuery({
-    queryKey: [TICKETS_QUERY_KEY],
-    queryFn: fetchTickets,
-  });
+  const { data, error, isFetching } = useSuspenseQuery(ticketsQueryOptions());
 
   if (error && !isFetching) {
     throw error;
   }
 
-  console.log('🪝 useTickets', data);
+  console.log("🪝 useTickets", data);
 
   const tickets = data?.tickets || [];
 
